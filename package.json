@@ -1,0 +1,19 @@
+{
+  "name": "kosher-m36-manager",
+  "version": "1.0.0",
+  "description": "Companion server to serve and download the Kosher M36 Manager Android APK",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "copy-apks": "node copy-apks.js",
+    "build": "echo 'No build step required for Node server'"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

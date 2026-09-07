@@ -1,0 +1,8 @@
+{
+  "name": "Remix מנהל נגן m36 כשר",
+  "description": "אפליקציית ניהול מתקדמת וייחודית לסיסטם של נגן אנדרואיד כשר",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

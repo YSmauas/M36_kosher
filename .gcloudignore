@@ -1,0 +1,20 @@
+# Exclude Android and Gradle files from the Cloud Run deployment bundle
+# to prevent Cloud Build / buildpacks from incorrectly detecting this as a Java/Gradle app
+/app/
+/gradle/
+/.gradle/
+/build.gradle.kts
+/settings.gradle.kts
+/gradle.properties
+/debug.keystore.base64
+/gradlew
+/gradlew.bat
+
+# Exclude git system files
+.git/
+.gitignore
+
+# Exclude local editor and OS files
+.DS_Store
+.idea/
+*.iml

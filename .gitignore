@@ -13,24 +13,12 @@
 /captures
 .externalNativeBuild
 .cxx
+# Local and build outputs
+build/
+app/build/
+.build-outputs/
+build-outputs/
 local.properties
 .env
 debug.keystore
-
-# Exclude Android source and Gradle files from the deployment bundle
-# to prevent Cloud Buildpacks from misdetecting this as a Java/Gradle app
-/app/
-/gradle/
-/build.gradle.kts
-/settings.gradle.kts
-/gradle.properties
-/gradlew
-/gradlew.bat
-/debug.keystore.base64
-
-# Ensure APK directories are included in the bundle
-!.build-outputs/
-!.build-outputs/**
-!build-outputs/
-!build-outputs/**
 

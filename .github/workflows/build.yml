@@ -20,6 +20,8 @@ jobs:
   build:
     name: Build Android APKs
     runs-on: ubuntu-latest
+    env:
+      JAVA_TOOL_OPTIONS: "-Djava.awt.headless=true"
 
     steps:
       - name: Checkout Code
@@ -28,7 +30,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -42,6 +44,10 @@ jobs:
           if [ -f "debug.keystore.base64" ]; then
             base64 -d debug.keystore.base64 > debug.keystore
             echo "Successfully decoded debug.keystore from base64"
+          fi
+          if [ ! -f "debug.keystore" ]; then
+            echo "Generating fallback debug keystore..."
+            keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
           fi
 
       - name: Run Unit Tests & Validations

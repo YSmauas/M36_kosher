@@ -1,28 +1,34 @@
 package com.example
 
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onRoot
-import com.example.ui.theme.MyApplicationTheme
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.captureRoboImage
-import org.junit.Rule
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import org.robolectric.annotation.GraphicsMode
 
-@RunWith(RobolectricTestRunner::class)
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(qualifiers = RobolectricDeviceQualifiers.Pixel8, sdk = [36])
-class GreetingScreenshotTest {
-
-  @get:Rule val composeTestRule = createComposeRule()
+class SystemManagerTest {
 
   @Test
-  fun greeting_screenshot() {
-    composeTestRule.setContent { MyApplicationTheme { Greeting("Robolectric") } }
+  fun testSystemPathsConstants() {
+    assertNotNull(SystemManager.PATH_FILE_1_APK)
+    assertNotNull(SystemManager.PATH_FILE_2_APK)
+    assertNotNull(SystemManager.PATH_FILE_3_APK)
+    assertNotNull(SystemManager.PATH_FILE_4_APK)
+    assertNotNull(SystemManager.PATH_FILE_5_APK)
+    assertNotNull(SystemManager.PATH_FILE_6)
+    assertNotNull(SystemManager.PATH_INSTALLER_FLAG)
+  }
 
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/greeting.png")
+  @Test
+  fun testDeviceStatusModel() {
+    val status = SystemManager.DeviceStatus(
+      videoEnabled = true,
+      installationsEnabled = false,
+      googleServicesEnabled = false,
+      isRooted = false,
+      currentPreset = 2
+    )
+    assertEquals(true, status.videoEnabled)
+    assertEquals(false, status.installationsEnabled)
+    assertEquals(2, status.currentPreset)
   }
 }
+

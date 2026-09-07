@@ -10,22 +10,29 @@ const srcRelease = path.join(__dirname, 'app/build/outputs/apk/release/app-relea
 
 const destDebug = path.join(__dirname, '.build-outputs/app-debug.apk');
 const destRelease = path.join(__dirname, '.build-outputs/app-release.apk');
+const destDebugPublic = path.join(__dirname, 'build-outputs/app-debug.apk');
+const destReleasePublic = path.join(__dirname, 'build-outputs/app-release.apk');
 
-// Ensure destination folder exists
-if (!fs.existsSync(path.dirname(destDebug))) {
-  fs.mkdirSync(path.dirname(destDebug), { recursive: true });
-}
+// Ensure destination folders exist
+[destDebug, destDebugPublic].forEach(dest => {
+  const dir = path.dirname(dest);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
 
 if (fs.existsSync(srcDebug)) {
   fs.copyFileSync(srcDebug, destDebug);
-  console.log('Successfully copied debug APK to .build-outputs');
+  fs.copyFileSync(srcDebug, destDebugPublic);
+  console.log('Successfully copied debug APK to build outputs');
 } else {
   console.log('Debug APK not found in app/build/outputs');
 }
 
 if (fs.existsSync(srcRelease)) {
   fs.copyFileSync(srcRelease, destRelease);
-  console.log('Successfully copied release APK to .build-outputs');
+  fs.copyFileSync(srcRelease, destReleasePublic);
+  console.log('Successfully copied release APK to build outputs');
 } else {
   console.log('Release APK not found in app/build/outputs');
 }

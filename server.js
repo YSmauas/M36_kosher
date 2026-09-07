@@ -6,20 +6,27 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Port must be 3000 as explicitly hardcoded by the platform's infrastructure
-const PORT = 3000;
+// Port configuration: AI Studio dev environment requires port 3000, while Cloud Run uses PORT (e.g. 8080)
+const DEV_PORT = 3000;
+const CLOUD_RUN_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : null;
 
-// Path to the output APKs with fallback to standard .build-outputs folder
+// Path to the output APKs with fallback across build-outputs and local build folders
 const getDebugApkPath = () => {
-  const buildPath = path.join(__dirname, '.build-outputs/app-debug.apk');
-  const localPath = path.join(__dirname, 'app/build/outputs/apk/debug/app-debug.apk');
-  return fs.existsSync(buildPath) ? buildPath : localPath;
+  const p1 = path.join(__dirname, 'build-outputs/app-debug.apk');
+  const p2 = path.join(__dirname, '.build-outputs/app-debug.apk');
+  const p3 = path.join(__dirname, 'app/build/outputs/apk/debug/app-debug.apk');
+  if (fs.existsSync(p1)) return p1;
+  if (fs.existsSync(p2)) return p2;
+  return p3;
 };
 
 const getReleaseApkPath = () => {
-  const buildPath = path.join(__dirname, '.build-outputs/app-release.apk');
-  const localPath = path.join(__dirname, 'app/build/outputs/apk/release/app-release.apk');
-  return fs.existsSync(buildPath) ? buildPath : localPath;
+  const p1 = path.join(__dirname, 'build-outputs/app-release.apk');
+  const p2 = path.join(__dirname, '.build-outputs/app-release.apk');
+  const p3 = path.join(__dirname, 'app/build/outputs/apk/release/app-release.apk');
+  if (fs.existsSync(p1)) return p1;
+  if (fs.existsSync(p2)) return p2;
+  return p3;
 };
 
 const MIME_TYPES = {
@@ -33,7 +40,7 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
 };
 
-const server = http.createServer((req, res) => {
+const requestHandler = (req, res) => {
   const url = req.url || '/';
   const DEBUG_APK_PATH = getDebugApkPath();
   const RELEASE_APK_PATH = getReleaseApkPath();
@@ -46,6 +53,13 @@ const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
     res.end();
+    return;
+  }
+
+  // Handle Cloud Run health checks
+  if (url === '/healthz' || url === '/health' || url === '/_health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ status: 'ok', time: new Date().toISOString() }));
     return;
   }
 
@@ -377,8 +391,25 @@ const server = http.createServer((req, res) => {
   // Fallback for missing resources
   res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
   res.end('משאב לא נמצא');
+};
+
+// Start primary server on port 3000 (required for AI Studio dev reverse proxy)
+const devServer = http.createServer(requestHandler);
+devServer.listen(DEV_PORT, '0.0.0.0', () => {
+  console.log(`Server is listening on port ${DEV_PORT}`);
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running at http://0.0.0.0:${PORT}`);
-});
+// Start secondary listener on Cloud Run's designated PORT (e.g. 8080 in production)
+if (CLOUD_RUN_PORT && CLOUD_RUN_PORT !== DEV_PORT) {
+  const prodServer = http.createServer(requestHandler);
+  prodServer.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${CLOUD_RUN_PORT} is in use (dev proxy active); serving on port ${DEV_PORT}`);
+    } else {
+      console.error(`Port ${CLOUD_RUN_PORT} error:`, err.message);
+    }
+  });
+  prodServer.listen(CLOUD_RUN_PORT, '0.0.0.0', () => {
+    console.log(`Cloud Run server is listening on port ${CLOUD_RUN_PORT}`);
+  });
+}

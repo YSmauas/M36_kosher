@@ -6,13 +6,23 @@
 /build.gradle.kts
 /settings.gradle.kts
 /gradle.properties
+/debug.keystore
 /debug.keystore.base64
 /gradlew
 /gradlew.bat
+/local.properties
+local.properties
+
+# Ensure build output folders containing the APKs are included
+!.build-outputs/
+!.build-outputs/**
+!build-outputs/
+!build-outputs/**
 
 # Exclude git system files
 .git/
 .gitignore
+/.github/
 
 # Exclude local editor and OS files
 .DS_Store

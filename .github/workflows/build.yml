@@ -1,0 +1,84 @@
+name: Android CI & APK Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Android APKs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Grant Execute Permission to Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Prepare Signing Keystore
+        run: |
+          if [ -f "debug.keystore.base64" ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+            echo "Successfully decoded debug.keystore from base64"
+          fi
+
+      - name: Run Unit Tests & Validations
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Prepare APK Artifacts
+        run: |
+          mkdir -p artifacts
+          if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
+            cp app/build/outputs/apk/debug/app-debug.apk artifacts/kosher-m36-manager-debug.apk
+          fi
+          if [ -f "app/build/outputs/apk/release/app-release.apk" ]; then
+            cp app/build/outputs/apk/release/app-release.apk artifacts/kosher-m36-manager-release.apk
+          fi
+          echo "Built APK files:"
+          ls -lh artifacts/
+
+      - name: Upload APKs as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kosher-m36-manager-apks
+          path: artifacts/
+          retention-days: 30
+
+      - name: Create GitHub Release (On Version Tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/kosher-m36-manager-release.apk
+            artifacts/kosher-m36-manager-debug.apk
+          generate_release_notes: true
+          draft: false
+          prerelease: false

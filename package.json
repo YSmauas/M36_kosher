@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "copy-apks": "node copy-apks.js",
-    "build": "echo 'No build step required for Node server'"
+    "build": "node copy-apks.js"
   },
   "engines": {
     "node": ">=18.0.0"

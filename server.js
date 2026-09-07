@@ -140,7 +140,10 @@ const requestHandler = (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>מנהל מערכת M36 כשר - לוח בקרה</title>
+  <title>Remix מנהל נגן m36 כשר</title>
+  <meta name="description" content="אפליקציית ניהול מתקדמת וייחודית לסיסטם של נגן אנדרואיד כשר">
+  <meta property="og:title" content="Remix מנהל נגן m36 כשר">
+  <meta property="og:description" content="אפליקציית ניהול מתקדמת וייחודית לסיסטם של נגן אנדרואיד כשר">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
@@ -394,22 +397,36 @@ const requestHandler = (req, res) => {
 };
 
 // Start primary server on port 3000 (required for AI Studio dev reverse proxy)
-const devServer = http.createServer(requestHandler);
-devServer.listen(DEV_PORT, '0.0.0.0', () => {
-  console.log(`Server is listening on port ${DEV_PORT}`);
-});
-
-// Start secondary listener on Cloud Run's designated PORT (e.g. 8080 in production)
-if (CLOUD_RUN_PORT && CLOUD_RUN_PORT !== DEV_PORT) {
-  const prodServer = http.createServer(requestHandler);
-  prodServer.on('error', (err) => {
+function startListener(port, label) {
+  if (!port) return null;
+  const server = http.createServer(requestHandler);
+  server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.log(`Port ${CLOUD_RUN_PORT} is in use (dev proxy active); serving on port ${DEV_PORT}`);
+      console.log(`[${label}] Port ${port} is already in use (handled gracefully)`);
     } else {
-      console.error(`Port ${CLOUD_RUN_PORT} error:`, err.message);
+      console.error(`[${label}] Port ${port} error:`, err.message);
     }
   });
-  prodServer.listen(CLOUD_RUN_PORT, '0.0.0.0', () => {
-    console.log(`Cloud Run server is listening on port ${CLOUD_RUN_PORT}`);
+  server.listen(port, '0.0.0.0', () => {
+    console.log(`[${label}] Server is listening on 0.0.0.0:${port}`);
   });
+  return server;
 }
+
+// In Cloud Run production, Cloud Run requires listening on PORT (typically 8080).
+// In AI Studio dev environment, the internal reverse proxy routes to port 3000.
+// We bind to both ports safely; if either port is already bound (e.g. nginx on 8080 in dev),
+// the error event is caught gracefully without terminating the process.
+startListener(DEV_PORT, 'DevServer');
+if (CLOUD_RUN_PORT && CLOUD_RUN_PORT !== DEV_PORT) {
+  startListener(CLOUD_RUN_PORT, 'CloudRunServer');
+}
+
+// Process-level guards against unexpected crashes
+process.on('uncaughtException', (err) => {
+  console.error('Process uncaughtException:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Process unhandledRejection:', reason);
+});
+

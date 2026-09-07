@@ -1,0 +1,18 @@
+[_]
+schema-version = "0.2"
+
+[project]
+id = "kosher-m36-manager"
+version = "1.0.0"
+
+[build]
+exclude = [
+  "app/**",
+  "gradle/**",
+  ".gradle/**",
+  "build.gradle.kts",
+  "settings.gradle.kts",
+  "gradlew",
+  "gradlew.bat",
+  "gradle.properties"
+]

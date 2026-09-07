@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "dev": "node server.js",
     "copy-apks": "node copy-apks.js",
     "build": "node copy-apks.js"
   },

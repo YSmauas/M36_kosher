@@ -25,14 +25,30 @@ if (fs.existsSync(srcDebug)) {
   fs.copyFileSync(srcDebug, destDebug);
   fs.copyFileSync(srcDebug, destDebugPublic);
   console.log('Successfully copied debug APK to build outputs');
+} else if (fs.existsSync(destDebugPublic) && !fs.existsSync(destDebug)) {
+  fs.copyFileSync(destDebugPublic, destDebug);
+  console.log('Synchronized debug APK from public build-outputs');
+} else if (fs.existsSync(destDebug) && !fs.existsSync(destDebugPublic)) {
+  fs.copyFileSync(destDebug, destDebugPublic);
+  console.log('Synchronized debug APK to public build-outputs');
+} else if (fs.existsSync(destDebugPublic)) {
+  console.log('Debug APK verified in build-outputs');
 } else {
-  console.log('Debug APK not found in app/build/outputs');
+  console.log('Debug APK not found');
 }
 
 if (fs.existsSync(srcRelease)) {
   fs.copyFileSync(srcRelease, destRelease);
   fs.copyFileSync(srcRelease, destReleasePublic);
   console.log('Successfully copied release APK to build outputs');
+} else if (fs.existsSync(destReleasePublic) && !fs.existsSync(destRelease)) {
+  fs.copyFileSync(destReleasePublic, destRelease);
+  console.log('Synchronized release APK from public build-outputs');
+} else if (fs.existsSync(destRelease) && !fs.existsSync(destReleasePublic)) {
+  fs.copyFileSync(destRelease, destReleasePublic);
+  console.log('Synchronized release APK to public build-outputs');
+} else if (fs.existsSync(destReleasePublic)) {
+  console.log('Release APK verified in build-outputs');
 } else {
-  console.log('Release APK not found in app/build/outputs');
+  console.log('Release APK not found');
 }

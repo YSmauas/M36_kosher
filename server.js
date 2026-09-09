@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Port configuration: AI Studio dev environment requires port 3000, while Cloud Run uses PORT (e.g. 8080)
+// Port configuration: AI Studio dev environment requires port 3000, while Cloud Run uses PORT (default 8080)
 const DEV_PORT = 3000;
-const CLOUD_RUN_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : null;
+const CLOUD_RUN_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 
 // Path to the output APKs with fallback across build-outputs and local build folders
 const getDebugApkPath = () => {

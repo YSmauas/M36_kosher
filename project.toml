@@ -3,9 +3,10 @@ schema-version = "0.2"
 
 [project]
 id = "kosher-m36-manager"
+name = "kosher-m36-manager"
 version = "1.0.0"
 
-[build]
+[io.buildpacks]
 exclude = [
   "app/**",
   "gradle/**",
@@ -16,3 +17,4 @@ exclude = [
   "gradlew.bat",
   "gradle.properties"
 ]
+

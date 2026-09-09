@@ -16,8 +16,6 @@
 # Local and build outputs
 build/
 app/build/
-.build-outputs/
-build-outputs/
 local.properties
 .env
 debug.keystore

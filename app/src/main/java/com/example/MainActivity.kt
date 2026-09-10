@@ -389,7 +389,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                             onSimulationToggled = { enabled ->
                                 SystemManager.setSimulationMode(context, enabled)
                                 isSimState = enabled
-                                Toast.makeText(context, if (enabled) "מצב סימולציה הופעל" else "מצב סיסטם הופעל", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, if (enabled) "מצב סימולציה הופעל" else "מצב פעולה הופעל", Toast.LENGTH_SHORT).show()
                                 coroutineScope.launch {
                                     if (!enabled) {
                                         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
@@ -528,7 +528,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 1: Version Management
                         DrawerLargeItem(
                             title = "ניהול גירסה כשרה",
-                            subtitle = "שינוי פרמטרים והרשאות דיגיטליות",
+                            subtitle = "שינוי פרמטרים והרשאות מערכת",
                             icon = Icons.Default.Lock,
                             color = MaterialTheme.colorScheme.primary,
                             onClick = {
@@ -547,7 +547,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 2: User Guide
                         DrawerLargeItem(
                             title = "מדריך שימוש מפורט",
-                            subtitle = "הוראות חינוכיות, באגים והתקנה פנימית",
+                            subtitle = "הוראות שימוש, באגים והתקנה פנימית",
                             icon = Icons.Default.PlayArrow,
                             color = MaterialTheme.colorScheme.secondary,
                             onClick = { navigateTo(AppScreen.USER_GUIDE) }
@@ -556,7 +556,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 3: App Store
                         DrawerLargeItem(
                             title = "חנות האפליקציות",
-                            subtitle = "התקנת תוכנות מאושרות בקוסמוס כשר",
+                            subtitle = "התקנת תוכנות מאושרות ממאגר כשר",
                             icon = Icons.Default.ShoppingCart,
                             color = MaterialTheme.colorScheme.tertiary,
                             onClick = {
@@ -748,7 +748,7 @@ fun launchOfflineStore(context: Context) {
             context.startActivity(launchIntent)
         } else {
             // Fallback web url or informative Toast
-            Toast.makeText(context, "חנות האפליקציות הכשרה חסרה או אינה מותקנת על מכשיר זה. אנא התקן אותה משרתי M36.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "חנות האפליקציות הכשרה חסרה או אינה מותקנת על מכשיר זה.", Toast.LENGTH_LONG).show()
         }
     } catch (e: Exception) {
         Toast.makeText(context, "נכשל בפתיחת חנות אפליקציות.", Toast.LENGTH_SHORT).show()
@@ -909,7 +909,7 @@ fun MainDashboardScreen(
                             color = Color.White.copy(alpha = 0.8f)
                         )
                         Text(
-                            text = "KOSHER_V2.4_ROOT",
+                            text = "v0.0.1_beta",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -1154,14 +1154,14 @@ fun MainDashboardScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "מערכת ניהול סיסטם - M36 KOSHER EDITION",
+                        text = "מערכת ניהול גרסה - M36 KOSHER EDITION",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF115E59).copy(alpha = 0.4f)
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "© כל הזכויות שמורות למפתח והנהלת הקהילה",
+                        text = "© כל הזכויות שמורות למפתח י.מ. מאואס",
                         fontSize = 10.sp,
                         color = Color(0xFF115E59).copy(alpha = 0.35f)
                     )
@@ -1229,7 +1229,7 @@ fun VersionStateLine(
 fun PasscodeVerificationScreen(
     passwordValue: String,
     onValueChange: (String) -> Unit,
-    subtitleMessage: String = "כדי לגשת לאפשרויות ניהול קבצי הכושר, אנא הקלד את סיסמת מנהל המערכת שלך:",
+    subtitleMessage: String = "כדי לגשת לאפשרויות ניהול המערכת, אנא הקלד את סיסמת מנהל המערכת שלך:",
     onCancel: () -> Unit,
     onVerify: () -> Unit
 ) {
@@ -1526,7 +1526,7 @@ fun VersionManagementScreen(
                                 color = Color(0xFF115E59)
                             )
                             Text(
-                                text = "נגן עם וידאו פתוח ועורך תווים, אך חסום לחלוטין לכל התקנה APK חיצונית (מעביר מנתיב 8 לנתיב 6).",
+                                text = "נגן עם וידאו פתוח ועורך שירים מאופשר, אך חסום לחלוטין לכל התקנה APK חיצונית).",
                                 fontSize = 12.sp,
                                 color = Color(0xFF475569)
                             )
@@ -1566,7 +1566,7 @@ fun VersionManagementScreen(
                                 color = Color(0xFF115E59)
                             )
                             Text(
-                                text = "מנטרל לגמרי וידאו ועורך שירים (הופך לקובץ 1 וקבצים 2,3,4 ל-.apkr) ומעתיק קובץ ערוך מנתיב 8.",
+                                text = "מנטרל לגמרי וידאו ומסיר את העורך שירים מהחנות, שימו לב - יש להסיר את ההתקנה של העורך שירים",
                                 fontSize = 12.sp,
                                 color = Color(0xFF475569)
                             )
@@ -1601,7 +1601,7 @@ fun VersionManagementScreen(
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
-                        text = "הוספה או הסרה של שירותי Google Play (GmsCore) במכשיר. אם כבוי, ינטרל ל-.apkr.",
+                        text = "הוספה של שירותי Google Play (GmsCore) במכשיר. אם כבוי, אין שירותי גוגל.",
                         fontSize = 12.sp,
                         color = Color(0xFF475569)
                     )
@@ -1758,7 +1758,7 @@ fun UserGuideScreen() {
                         1 -> "הנחיות לביצוע הגדרה ראשונית:\n\n1. עם אתחול האפליקציה לראשונה, מומלץ להיכנס לתפריט 'הגדרות' ולקבוע סיסמת מנהל ראשונית.\n\n2. סיסמת המנהל תמנע מילדים או משתמשים אחרים לערוך שינויים בכשרות המכשיר.\n\n3. שמור את הסיסמה במקום בטוח. היא תידרש ממך בכל כניסה לתפריט השינויים ובכל פעם שתתבצע שמירת שינויים במחיצות ה-System."
                         2 -> "מידע טכני נחוץ למנהל ה-ROM:\n\n* האפליקציה פועלת ברמת המערכת ומשנה את שמות קבצי ה-APK באנדרואיד על ידי שינוי הסיומת שלהם מ-.apk ל-.apkr (ובכך משביתה אותם לחלוטין ברמת הלינוקס).\n\n* קובצי ה-PackageInstaller מוחלפים בין גרסת המקור (הרשאות פתוחות להתקנה) לבין הגרסה הערוכה החסומה, המונעת כל התקנה ומניחה הגבלת חומרה איתנה שאינה ניתנת לעקיפה."
                         3 -> "שאלות נפוצות ובאגים אפשריים:\n\n* בעיה: נכשל שמירה ורשום שגיאת permissions?\nפתרון: ודא כי המכשיר מחזיק הרשאות רוט מלאות (Magisk/KernelSU Superuser) ושהאפליקציה הותקנה כמחיצת מערכת (System App) מתאימה.\n\n* בעיה: חנות האפליקציות לא מותקנת?\nפתרון: אפשרות 'התקנות' חנות דורשת שקובץ החנות com.example.offlinestore1 יהיה קיים מראש במכשיר."
-                        else -> "כל הזכויות שמורות לפיתוח ה-ROM הכשר של נגן m36.\n\nמנהל הפיתוח והתיקונים: משה ש.\nמסייעים, יועצי כשרות ואבטחת מידע פנימית: הנהלת קהילת הכשרת הנגנים ירושלים.\n\nיישר כוח לכל העוסקים במלאכה לטובת חינוך כשר, טהור ואיכותי."
+                        else -> "כל הזכויות שמורות לפיתוח ה-ROM הכשר של נגן m36.\n\nמנהל הפיתוח והתיקונים: י.מ. מאואס\nמסייעים, יועצי כשרות ואבטחת מידע פנימית: חברי פורום מתמחים טופ.\n\nיישר כוח לכל העוסקים במלאכה לטובת חינוך כשר, טהור ואיכותי."
                     }
                     
                     Text(
@@ -1992,9 +1992,11 @@ fun SettingsScreen(
 // About application screen displaying contact credentials
 @Composable
 fun AboutScreen() {
+    val scrollState = rememberScrollState()
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(scrollState)
             .padding(vertical = 8.dp)
             .shadow(2.dp, RoundedCornerShape(24.dp)),
         shape = RoundedCornerShape(24.dp),
@@ -2030,7 +2032,7 @@ fun AboutScreen() {
             )
 
             Text(
-                text = "גרסה 1.0.4 (מערכת כשרות)",
+                text = "גרסה v0.0.1_beta",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
@@ -2042,9 +2044,9 @@ fun AboutScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                AboutContactRow(label = "יוצר ומפתח ה-ROM:", value = "משה שורש")
-                AboutContactRow(label = "תמיכה ויעוץ טכני:", value = "אברהם כהן (מפתח סיסטם)")
-                AboutContactRow(label = "דואר אלקטרוני לפניות:", value = "by058323@gmail.com")
+                AboutContactRow(label = "יוצר ומפתח:", value = "י.מ. מאואס")
+                AboutContactRow(label = "תמיכה ויעוץ טכני:", value = "Google AI studio")
+                AboutContactRow(label = "דואר אלקטרוני לפניות:", value = "ysrlmyrmws1@gmail.com")
             }
 
             HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))

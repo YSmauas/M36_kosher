@@ -280,7 +280,14 @@ object SystemManager {
             // REAL Device Root modification script
             try {
                 val commands = mutableListOf<String>()
-                
+
+                // CRITICAL: without this, the shell's final exit code is only the
+                // exit code of the LAST command (the read-only remount at the end),
+                // which almost always succeeds — so a failed mv/cp earlier (e.g. due to
+                // a failed read-write remount or an SELinux denial) was being reported
+                // as a false "success" even though nothing actually changed on disk.
+                commands.add("set -e")
+
                 // Mount system read-write
                 commands.add("mount -o remount,rw /system 2>/dev/null || mount -o remount,rw / 2>/dev/null")
                 
@@ -345,7 +352,13 @@ object SystemManager {
                 os.flush()
                 os.close()
 
+                // Capture stdout/stderr so a real failure (e.g. "Read-only file
+                // system" or an SELinux "Permission denied") is visible instead of
+                // silently swallowed.
+                val stdOut = process.inputStream.bufferedReader().readText().trim()
+                val stdErr = process.errorStream.bufferedReader().readText().trim()
                 val exitValue = process.waitFor()
+
                 if (exitValue == 0) {
                     // Update cache state
                     getPrefs(context).edit().apply {
@@ -354,7 +367,14 @@ object SystemManager {
                     }
                     return Pair(true, null)
                 } else {
-                    return Pair(false, "Root shell returned failure code: $exitValue. Please make sure the app was granted root permissions in Magisk/KernelSU.")
+                    val details = listOf(stdErr, stdOut).firstOrNull { it.isNotBlank() }
+                    val diagMsg = if (details != null) {
+                        "כשל בביצוע פקודות המערכת (קוד $exitValue): $details"
+                    } else {
+                        "Root shell returned failure code: $exitValue. Please make sure the app was granted root permissions in Magisk/KernelSU, and that /system is actually writable (some devices require disabling dm-verity/SELinux enforcement)."
+                    }
+                    Log.e(TAG, "saveAndApplyChanges failed: exit=$exitValue stdout=$stdOut stderr=$stdErr")
+                    return Pair(false, diagMsg)
                 }
             } catch (e: Exception) {
                 return Pair(false, "Exception raised while running root script: ${e.localizedMessage}")

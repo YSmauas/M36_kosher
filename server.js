@@ -29,12 +29,22 @@ const getReleaseApkPath = () => {
   return p3;
 };
 
+const getReleaseAabPath = () => {
+  const p1 = path.join(__dirname, 'build-outputs/app-release.aab');
+  const p2 = path.join(__dirname, '.build-outputs/app-release.aab');
+  const p3 = path.join(__dirname, 'app/build/outputs/bundle/release/app-release.aab');
+  if (fs.existsSync(p1)) return p1;
+  if (fs.existsSync(p2)) return p2;
+  return p3;
+};
+
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css',
   '.js': 'text/javascript',
   '.json': 'application/json',
   '.apk': 'application/vnd.android.package-archive',
+  '.aab': 'application/octet-stream',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.svg': 'image/svg+xml',
@@ -44,6 +54,7 @@ const requestHandler = (req, res) => {
   const url = req.url || '/';
   const DEBUG_APK_PATH = getDebugApkPath();
   const RELEASE_APK_PATH = getReleaseApkPath();
+  const RELEASE_AAB_PATH = getReleaseAabPath();
   
   // Set CORS headers for any external embedding
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -98,12 +109,31 @@ const requestHandler = (req, res) => {
     return;
   }
 
+  if (url === '/download/aab' || url === '/app-release.aab') {
+    if (fs.existsSync(RELEASE_AAB_PATH)) {
+      const stat = fs.statSync(RELEASE_AAB_PATH);
+      res.writeHead(200, {
+        'Content-Type': MIME_TYPES['.aab'],
+        'Content-Length': stat.size,
+        'Content-Disposition': 'attachment; filename="KosherM36Manager-Release.aab"',
+      });
+      const readStream = fs.createReadStream(RELEASE_AAB_PATH);
+      readStream.pipe(res);
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end('<h1>קובץ חבילת שחרור (AAB) לא נמצא</h1><p>אנא הרץ את תהליך הבנייה ראשית.</p>');
+    }
+    return;
+  }
+
   // Handle Status API
   if (url === '/api/status') {
     const debugExists = fs.existsSync(DEBUG_APK_PATH);
     const releaseExists = fs.existsSync(RELEASE_APK_PATH);
+    const aabExists = fs.existsSync(RELEASE_AAB_PATH);
     const debugSize = debugExists ? fs.statSync(DEBUG_APK_PATH).size : 0;
     const releaseSize = releaseExists ? fs.statSync(RELEASE_APK_PATH).size : 0;
+    const aabSize = aabExists ? fs.statSync(RELEASE_AAB_PATH).size : 0;
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -122,6 +152,12 @@ const requestHandler = (req, res) => {
           path: RELEASE_APK_PATH,
           sizeBytes: releaseSize,
           sizeMb: (releaseSize / (1024 * 1024)).toFixed(2) + ' MB'
+        },
+        bundle: {
+          exists: aabExists,
+          path: RELEASE_AAB_PATH,
+          sizeBytes: aabSize,
+          sizeMb: (aabSize / (1024 * 1024)).toFixed(2) + ' MB'
         }
       }
     }));

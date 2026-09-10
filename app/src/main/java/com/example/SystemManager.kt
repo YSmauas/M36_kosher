@@ -288,8 +288,14 @@ object SystemManager {
                 // as a false "success" even though nothing actually changed on disk.
                 commands.add("set -e")
 
-                // Mount system read-write
+                // Mount system read-write.
+                // NOTE: on Android 9+ devices, /product (and sometimes /vendor,
+                // /system_ext) are SEPARATE mount points, not plain subfolders of
+                // /system — remounting /system rw does NOT make /system/product
+                // writable. GmsCore.apk and FilesGoogle.apk live under
+                // /system/product/priv-app/, so we must remount that mount point too.
                 commands.add("mount -o remount,rw /system 2>/dev/null || mount -o remount,rw / 2>/dev/null")
+                commands.add("mount -o remount,rw /system/product 2>/dev/null || mount -o remount,rw /product 2>/dev/null || true")
                 
                 // Define actual operations for renaming/moving files based on option rules
                 when (selectedPreset) {
@@ -338,8 +344,9 @@ object SystemManager {
                     commands.add("if [ -f $PATH_FILE_5_APK ]; then mv $PATH_FILE_5_APK $PATH_FILE_5_APKR; fi")
                 }
 
-                // Sync and mount read-only
+                // Sync and mount read-only again
                 commands.add("sync")
+                commands.add("mount -o remount,ro /system/product 2>/dev/null || mount -o remount,ro /product 2>/dev/null || true")
                 commands.add("mount -o remount,ro /system 2>/dev/null || mount -o remount,ro / 2>/dev/null")
 
                 // Execute root process shell

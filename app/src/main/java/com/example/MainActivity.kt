@@ -547,7 +547,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 2: User Guide
                         DrawerLargeItem(
                             title = "מדריך שימוש מפורט",
-                            subtitle = "הוראות שימוש, באגים והתקנה פנימית",
+                            subtitle = "הוראות שימוש, באגים, התקנה וזכויות יוצרים",
                             icon = Icons.Default.PlayArrow,
                             color = MaterialTheme.colorScheme.secondary,
                             onClick = { navigateTo(AppScreen.USER_GUIDE) }
@@ -556,7 +556,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 3: App Store
                         DrawerLargeItem(
                             title = "חנות האפליקציות",
-                            subtitle = "התקנת תוכנות מאושרות ממאגר כשר",
+                            subtitle = "התקנת אפליקציות מאושרות ממאגר המערכת",
                             icon = Icons.Default.ShoppingCart,
                             color = MaterialTheme.colorScheme.tertiary,
                             onClick = {
@@ -660,7 +660,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = "כעת יבוצע אתחול מערכת (Reboot) על מנת לטעון את קבצי הסיסטם מחדש.",
+                            text = "כעת יבוצע אתחול מערכת (Reboot) על מנת לטעון את המערכת מחדש.",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,
@@ -771,9 +771,9 @@ fun MainDashboardScreen(
     var activeQuickTab by remember { mutableIntStateOf(0) }
     
     val quickTabTexts = listOf(
-        "ברוכים הבאים למשחז הניהול הסיסטמי של נגן M36 הכשר שלך. המערכת מותקנת ומוגדרת ברמת הלינוקס והמחיצה הכשרה, ומאפשרת שליטה מלאה על תצורות המכשיר.",
+        "ברוכים הבאים לממשק הניהול של נגן M36 הכשר שלך. המערכת מותקנת ומוגדרת ברמת הלינוקס ומחיצת המערכת, ומאפשרת שליטה מלאה על תצורות המכשיר.",
         "באמצעות תפריט 'ניהול גירסה' מוגן הסיסמה, תוכל לקבוע את חוקי החסימה וההרשאות של המכשיר. החלת הגדרות משכתבת מחדש קבצי ROM קריטיים.",
-        "המערכת משפרת כשרות על ידי הגדרות APK דינמיות: הפיכת קבצי וידאו ל-.apkr לא פעילים והגבלת ה-PackageInstaller כדי למנוע התקנות חיצוניות.",
+        "המערכת משפרת כשרות על ידי הגדרות APK דינמיות: הפיכת אפליקציות וידאו ללא פעילים והגבלת מתקין החבילה כדי למנוע התקנות חיצוניות.",
         "במידה והשינויים לא פועלים, ודא תמיד שהמכשיר מותקן עם הרשאות מנהל מערכת רוט (Kernelsu / Magisk Daemon) מלאות, או העבר למצב הדמיה בהגדרות."
     )
 
@@ -887,7 +887,7 @@ fun MainDashboardScreen(
                             label = "שירותי גוגל:",
                             isActive = status.googleServicesEnabled,
                             activeLabel = "פעיל",
-                            inactiveLabel = "מוסתר",
+                            inactiveLabel = "חסום",
                             isGreenPositive = true
                         )
                     }
@@ -909,7 +909,7 @@ fun MainDashboardScreen(
                             color = Color.White.copy(alpha = 0.8f)
                         )
                         Text(
-                            text = "v0.0.1_beta",
+                            text = "v0.0.2_beta",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -1486,7 +1486,7 @@ fun VersionManagementScreen(
                                 color = Color(0xFF115E59)
                             )
                             Text(
-                                text = "מנהל קבצים עם וידאו מובנה, עורך קבצי שירים ומאפשר התקנות חופשיות במערכת (מעביר מנתיב 7 לנתיב 6).",
+                                text = "מנהל קבצים עם וידאו מובנה, עורך קבצי שירים מותקנים, ומאפשר התקנות חופשיות במערכת.",
                                 fontSize = 12.sp,
                                 color = Color(0xFF475569)
                             )
@@ -1566,7 +1566,7 @@ fun VersionManagementScreen(
                                 color = Color(0xFF115E59)
                             )
                             Text(
-                                text = "מנטרל לגמרי וידאו ומסיר את העורך שירים מהחנות, שימו לב - יש להסיר את ההתקנה של העורך שירים",
+                                text = "מנטרל לגמרי וידאו ומסיר את העורך שירים מהחנות, שימו לב - יש להסיר ידנית את ההתקנה של העורך שירים (אם מותקנת).",
                                 fontSize = 12.sp,
                                 color = Color(0xFF475569)
                             )
@@ -1630,7 +1630,7 @@ fun VersionManagementScreen(
             ) {
                 Icon(Icons.Default.Check, contentDescription = "שמור", tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("שמירה והחלה", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text("שמירה", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
 
             OutlinedButton(
@@ -1757,8 +1757,8 @@ fun UserGuideScreen() {
                         0 -> "ברוכים הבאים לאפליקציית ניהול נגן m36 כשר.\n\nכלי מתקדם זה פותח במיוחד כדי להעניק לך שליטה מלאה בפרמטרי הכשרות, חבילות ההתקנה, החומרה והשירותים של הנגן.\n\nמטרת האפליקציה היא לאפשר התאמה מושלמת בין רצון המשתמש לתצורה הכשרה של מכשיר ה-Android שברשותו, מבלי להסתבך עם הגדרות וקודים מורכבים במחשב."
                         1 -> "הנחיות לביצוע הגדרה ראשונית:\n\n1. עם אתחול האפליקציה לראשונה, מומלץ להיכנס לתפריט 'הגדרות' ולקבוע סיסמת מנהל ראשונית.\n\n2. סיסמת המנהל תמנע מילדים או משתמשים אחרים לערוך שינויים בכשרות המכשיר.\n\n3. שמור את הסיסמה במקום בטוח. היא תידרש ממך בכל כניסה לתפריט השינויים ובכל פעם שתתבצע שמירת שינויים במחיצות ה-System."
                         2 -> "מידע טכני נחוץ למנהל ה-ROM:\n\n* האפליקציה פועלת ברמת המערכת ומשנה את שמות קבצי ה-APK באנדרואיד על ידי שינוי הסיומת שלהם מ-.apk ל-.apkr (ובכך משביתה אותם לחלוטין ברמת הלינוקס).\n\n* קובצי ה-PackageInstaller מוחלפים בין גרסת המקור (הרשאות פתוחות להתקנה) לבין הגרסה הערוכה החסומה, המונעת כל התקנה ומניחה הגבלת חומרה איתנה שאינה ניתנת לעקיפה."
-                        3 -> "שאלות נפוצות ובאגים אפשריים:\n\n* בעיה: נכשל שמירה ורשום שגיאת permissions?\nפתרון: ודא כי המכשיר מחזיק הרשאות רוט מלאות (Magisk/KernelSU Superuser) ושהאפליקציה הותקנה כמחיצת מערכת (System App) מתאימה.\n\n* בעיה: חנות האפליקציות לא מותקנת?\nפתרון: אפשרות 'התקנות' חנות דורשת שקובץ החנות com.example.offlinestore1 יהיה קיים מראש במכשיר."
-                        else -> "כל הזכויות שמורות לפיתוח ה-ROM הכשר של נגן m36.\n\nמנהל הפיתוח והתיקונים: י.מ. מאואס\nמסייעים, יועצי כשרות ואבטחת מידע פנימית: חברי פורום מתמחים טופ.\n\nיישר כוח לכל העוסקים במלאכה לטובת חינוך כשר, טהור ואיכותי."
+                        3 -> "שאלות נפוצות ובאגים אפשריים:\n\n* בעיה: נכשל בשמירה ורשום שגיאת permissions?\nפתרון: ודא כי המכשיר מחזיק הרשאות רוט מלאות (Magisk/KernelSU Superuser) ושהאפליקציה הותקנה כמחיצת מערכת (System App) מתאימה.\n\n* בעיה: חנות האפליקציות לא מותקנת?\nפתרון: אפשרות 'חנות אפליקציות' דורשת שקובץ החנות com.example.offlinestore1 יהיה קיים מראש במכשיר."
+                        else -> "כל הזכויות שמורות לפיתוח ה-ROM הכשר של נגן m36.\n\nמנהל הפיתוח והתיקונים: י.מ. מאואס\nמסייעים, יועצי כשרות ואבטחת מידע פנימית: חברי פורום מתמחים טופ.\n\nיישר כוח לכל העוסקים במלאכה לטובת חינוך כשר, טהור ואיכותי..."
                     }
                     
                     Text(
@@ -2032,7 +2032,7 @@ fun AboutScreen() {
             )
 
             Text(
-                text = "גרסה v0.0.1_beta",
+                text = "גרסה v0.0.2_beta",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
@@ -2052,7 +2052,7 @@ fun AboutScreen() {
             HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
 
             Text(
-                text = "אפליקציה זו מיועדת עבור שילוב במערכת (ROM Component) של נגנים מסוג M36 המורצים על אנדרואיד כשר, ומבוססת על הרשאות רוט מלאות. שינוי קבצי סיסטם על ידי האפליקציה חוסם התקנות ווידאו ישירות מדרגת לינוקס נמוכה.",
+                text = "אפליקציה זו מיועדת עבור שילוב במערכת (ROM Component) של נגנים מסוג M36 המורצים על אנדרואיד, ומבוססת על הרשאות רוט מלאות. שינוי קבצי מערכת על ידי האפליקציה, חוסם התקנות ווידאו ישירות מדרגת לינוקס נמוכה.",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,

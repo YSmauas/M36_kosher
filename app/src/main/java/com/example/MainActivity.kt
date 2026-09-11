@@ -46,6 +46,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.MyApplicationTheme
+import com.example.ui.theme.KosherTeal
+import com.example.ui.theme.KosherLightBlue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -424,7 +426,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         .padding(24.dp),
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+                    border = BorderStroke(1.dp, Color(0xFFCCFBF1))
                 ) {
                     Column(
                         modifier = Modifier
@@ -475,7 +477,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         .fillMaxWidth(0.78f)
                         .fillMaxHeight()
                         .background(MaterialTheme.colorScheme.surface)
-                        .border(BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)))
+                        .border(BorderStroke(1.dp, Color(0xFFCCFBF1).copy(alpha = 0.5f)))
                         .align(Alignment.CenterStart) // CenterStart aligns to Right in Hebrew layout context
                         .clickable(enabled = false) {},
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -545,7 +547,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 2: User Guide
                         DrawerLargeItem(
                             title = "מדריך שימוש מפורט",
-                            subtitle = "הוראות שימוש, באגים והתקנה פנימית",
+                            subtitle = "הוראות שימוש, באגים, התקנה וזכויות יוצרים",
                             icon = Icons.Default.PlayArrow,
                             color = MaterialTheme.colorScheme.secondary,
                             onClick = { navigateTo(AppScreen.USER_GUIDE) }
@@ -554,7 +556,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         // Large row 3: App Store
                         DrawerLargeItem(
                             title = "חנות האפליקציות",
-                            subtitle = "התקנת תוכנות מאושרות ממאגר כשר",
+                            subtitle = "התקנת אפליקציות מאושרות ממאגר המערכת",
                             icon = Icons.Default.ShoppingCart,
                             color = MaterialTheme.colorScheme.tertiary,
                             onClick = {
@@ -658,7 +660,7 @@ fun KosherManagerApp(currentThemeMode: Int, onThemeChanged: (Int) -> Unit) {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = "כעת יבוצע אתחול מערכת (Reboot) על מנת לטעון את קבצי הסיסטם מחדש.",
+                            text = "כעת יבוצע אתחול מערכת (Reboot) על מנת לטעון את המערכת מחדש.",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,
@@ -769,9 +771,9 @@ fun MainDashboardScreen(
     var activeQuickTab by remember { mutableIntStateOf(0) }
     
     val quickTabTexts = listOf(
-        "ברוכים הבאים למשחז הניהול הסיסטמי של נגן M36 הכשר שלך. המערכת מותקנת ומוגדרת ברמת הלינוקס והמחיצה הכשרה, ומאפשרת שליטה מלאה על תצורות המכשיר.",
+        "ברוכים הבאים לממשק הניהול של נגן M36 הכשר שלך. המערכת מותקנת ומוגדרת ברמת הלינוקס ומחיצת המערכת, ומאפשרת שליטה מלאה על תצורות המכשיר.",
         "באמצעות תפריט 'ניהול גירסה' מוגן הסיסמה, תוכל לקבוע את חוקי החסימה וההרשאות של המכשיר. החלת הגדרות משכתבת מחדש קבצי ROM קריטיים.",
-        "המערכת משפרת כשרות על ידי הגדרות APK דינמיות: הפיכת קבצי וידאו ל-.apkr לא פעילים והגבלת ה-PackageInstaller כדי למנוע התקנות חיצוניות.",
+        "המערכת משפרת כשרות על ידי הגדרות APK דינמיות: הפיכת אפליקציות וידאו ללא פעילים והגבלת מתקין החבילה כדי למנוע התקנות חיצוניות.",
         "במידה והשינויים לא פועלים, ודא תמיד שהמכשיר מותקן עם הרשאות מנהל מערכת רוט (Kernelsu / Magisk Daemon) מלאות, או העבר למצב הדמיה בהגדרות."
     )
 
@@ -794,7 +796,7 @@ fun MainDashboardScreen(
                     text = "ברוכים הבאים!",
                     fontSize = 42.sp,
                     fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onSurface, // Deep high-contrast teal
+                    color = Color(0xFF115E59), // Deep high-contrast teal
                     fontFamily = FontFamily.SansSerif,
                     textAlign = TextAlign.Center
                 )
@@ -803,7 +805,7 @@ fun MainDashboardScreen(
                     text = "נגן M36 כשר",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.primary, // Primary teal accent
+                    color = Color(0xFF0D9488), // Primary teal accent
                     fontFamily = FontFamily.SansSerif,
                     textAlign = TextAlign.Center
                 )
@@ -820,7 +822,7 @@ fun MainDashboardScreen(
                 colors = CardDefaults.cardColors(
                     containerColor = Color.White.copy(alpha = 0.85f)
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+                border = BorderStroke(1.dp, Color(0xFFCCFBF1))
             ) {
                 Column(
                     modifier = Modifier
@@ -839,7 +841,7 @@ fun MainDashboardScreen(
                             modifier = Modifier
                                 .size(36.dp)
                                 .background(
-                                    Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
+                                    Brush.linearGradient(listOf(KosherTeal, KosherLightBlue)),
                                     RoundedCornerShape(8.dp)
                                 ),
                             contentAlignment = Alignment.Center
@@ -856,7 +858,7 @@ fun MainDashboardScreen(
                             text = "פרמטרים של המערכת",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = Color(0xFF115E59)
                         )
                     }
 
@@ -885,7 +887,7 @@ fun MainDashboardScreen(
                             label = "שירותי גוגל:",
                             isActive = status.googleServicesEnabled,
                             activeLabel = "פעיל",
-                            inactiveLabel = "מוסתר",
+                            inactiveLabel = "חסום",
                             isGreenPositive = true
                         )
                     }
@@ -896,7 +898,7 @@ fun MainDashboardScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.onSurface, RoundedCornerShape(16.dp))
+                            .background(Color(0xFF115E59), RoundedCornerShape(16.dp))
                             .padding(horizontal = 16.dp, vertical = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
@@ -907,7 +909,7 @@ fun MainDashboardScreen(
                             color = Color.White.copy(alpha = 0.8f)
                         )
                         Text(
-                            text = "v0.0.1_beta",
+                            text = "v0.0.2_beta",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -916,7 +918,7 @@ fun MainDashboardScreen(
                     }
 
                     Spacer(modifier = Modifier.height(14.dp))
-                    Divider(color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.padding(vertical = 4.dp))
+                    Divider(color = Color(0xFFCCFBF1), modifier = Modifier.padding(vertical = 4.dp))
                     Spacer(modifier = Modifier.height(14.dp))
 
                     // Simulator state label
@@ -929,11 +931,11 @@ fun MainDashboardScreen(
                             text = "סביבת עבודה ריצה:",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = Color(0xFF475569)
                         )
                         
-                        val capsuleBg = if (isSim) MaterialTheme.colorScheme.tertiaryContainer else if (status.isRooted) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.errorContainer
-                        val capsuleColor = if (isSim) MaterialTheme.colorScheme.onTertiaryContainer else if (status.isRooted) MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onErrorContainer
+                        val capsuleBg = if (isSim) Color(0xFFF0FDF4) else if (status.isRooted) Color(0xFFF0FDF4) else Color(0xFFFEF2F2)
+                        val capsuleColor = if (isSim) Color(0xFF16A34A) else if (status.isRooted) Color(0xFF16A34A) else Color(0xFFDC2626)
                         val capsuleLabel = if (isSim) "הדמיית סימולטור" else if (status.isRooted) "רוט (Root) מזהה" else "אין רוט (גישה נעולה)"
 
                         Card(
@@ -964,7 +966,7 @@ fun MainDashboardScreen(
                 colors = CardDefaults.cardColors(
                     containerColor = Color.White.copy(alpha = 0.85f)
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+                border = BorderStroke(1.dp, Color(0xFFCCFBF1))
             ) {
                 Column(
                     modifier = Modifier
@@ -982,7 +984,7 @@ fun MainDashboardScreen(
                         Box(
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(8.dp)),
+                                .background(Color(0xFF10B981), RoundedCornerShape(8.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -997,7 +999,7 @@ fun MainDashboardScreen(
                             text = "מדריך מהיר",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = Color(0xFF115E59)
                         )
                     }
 
@@ -1023,14 +1025,14 @@ fun MainDashboardScreen(
                                     text = tab,
                                     fontSize = 13.sp,
                                     fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
-                                    color = if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                                    color = if (isActive) Color(0xFF0D9488) else Color(0xFF94A3B8)
                                 )
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth(0.7f)
                                         .height(3.dp)
-                                        .background(if (isActive) MaterialTheme.colorScheme.primary else Color.Transparent)
+                                        .background(if (isActive) Color(0xFF0D9488) else Color.Transparent)
                                 )
                             }
                         }
@@ -1047,7 +1049,7 @@ fun MainDashboardScreen(
                         Text(
                             text = text,
                             fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = Color(0xFF475569),
                             lineHeight = 18.sp,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -1056,7 +1058,7 @@ fun MainDashboardScreen(
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider(color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.padding(vertical = 4.dp))
+                    Divider(color = Color(0xFFCCFBF1), modifier = Modifier.padding(vertical = 4.dp))
                     Spacer(modifier = Modifier.height(10.dp))
 
                     // Read More buttons and launcher bullets
@@ -1070,13 +1072,13 @@ fun MainDashboardScreen(
                             Box(
                                 modifier = Modifier
                                     .size(24.dp)
-                                    .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                                    .background(Color(0xFFCCFBF1), CircleShape)
                                     .border(1.5.dp, Color.White, CircleShape)
                             )
                             Box(
                                 modifier = Modifier
                                     .size(24.dp)
-                                    .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape)
+                                    .background(Color(0xFF99F6E4), CircleShape)
                                     .border(1.5.dp, Color.White, CircleShape)
                             )
                         }
@@ -1084,7 +1086,7 @@ fun MainDashboardScreen(
                         // Text link / indicator button
                         TextButton(
                             onClick = onExploreGuide,
-                            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                            colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFF0D9488))
                         ) {
                             Text(
                                 text = "המשך קריאה ←",
@@ -1120,8 +1122,8 @@ fun MainDashboardScreen(
                             .background(
                                 Brush.horizontalGradient(
                                     colors = listOf(
-                                        MaterialTheme.colorScheme.primary, // Teal 600
-                                        MaterialTheme.colorScheme.secondary  // Teal 400
+                                        Color(0xFF0D9488), // Teal 600
+                                        Color(0xFF2DD4BF)  // Teal 400
                                     )
                                 )
                             ),
@@ -1155,13 +1157,13 @@ fun MainDashboardScreen(
                         text = "מערכת ניהול גרסה - M36 KOSHER EDITION",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        color = Color(0xFF115E59).copy(alpha = 0.4f)
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = "© כל הזכויות שמורות למפתח י.מ. מאואס",
                         fontSize = 10.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                        color = Color(0xFF115E59).copy(alpha = 0.35f)
                     )
                 }
             }
@@ -1179,15 +1181,15 @@ fun VersionStateLine(
     isGreenPositive: Boolean = true
 ) {
     // Standard color states from the HTML
-    val badgeBg = if (isActive == isGreenPositive) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.errorContainer
-    val badgeText = if (isActive == isGreenPositive) MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onErrorContainer
+    val badgeBg = if (isActive == isGreenPositive) Color(0xFFD1FAE5) else Color(0xFFFEE2E2)
+    val badgeText = if (isActive == isGreenPositive) Color(0xFF059669) else Color(0xFFDC2626)
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = Color(0xFFCCFBF1),
                 shape = RoundedCornerShape(16.dp)
             )
             .background(
@@ -1202,7 +1204,7 @@ fun VersionStateLine(
             text = label,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = Color(0xFF475569)
         )
         
         Box(
@@ -1240,7 +1242,7 @@ fun PasscodeVerificationScreen(
             .shadow(4.dp, RoundedCornerShape(24.dp)),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+        border = BorderStroke(1.dp, Color(0xFFCCFBF1))
     ) {
         Column(
             modifier = Modifier
@@ -1267,13 +1269,13 @@ fun PasscodeVerificationScreen(
                 text = "נדרש אימות סיסמה",
                 fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color(0xFF115E59)
             )
 
             Text(
                 text = subtitleMessage,
                 fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = Color(0xFF475569),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 12.dp)
             )
@@ -1337,7 +1339,7 @@ fun PasswordConfigScreen(
             .shadow(4.dp, RoundedCornerShape(24.dp)),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+        border = BorderStroke(1.dp, Color(0xFFCCFBF1))
     ) {
         Column(
             modifier = Modifier
@@ -1364,13 +1366,13 @@ fun PasswordConfigScreen(
                 text = "הגדרת סיסמה ראשונית",
                 fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color(0xFF115E59)
             )
 
             Text(
                 text = "טרם נקבעה סיסמה לניהול הנגן הכשר. אנא קבע סיסמה ספרתית ייחודית כעת כדי למנוע יציאה בלתי רצויה מחוקי הכשרות:",
                 fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = Color(0xFF475569),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
@@ -1437,7 +1439,7 @@ fun VersionManagementScreen(
                 .shadow(4.dp, RoundedCornerShape(24.dp)),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+            border = BorderStroke(1.dp, Color(0xFFCCFBF1))
         ) {
             Column(
                 modifier = Modifier
@@ -1449,7 +1451,7 @@ fun VersionManagementScreen(
                     text = "בחר תצורת גרסה (לבחירה אחת בלבד):",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = Color(0xFF115E59)
                 )
 
                 // Choice 1: With video and installations
@@ -1460,7 +1462,7 @@ fun VersionManagementScreen(
                         .clickable { onPresetSelected(1) }
                         .border(
                             width = if (isSelected1) 2.dp else 1.dp,
-                            color = if (isSelected1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer,
+                            color = if (isSelected1) MaterialTheme.colorScheme.primary else Color(0xFFCCFBF1),
                             shape = RoundedCornerShape(12.dp)
                         )
                         .background(
@@ -1481,12 +1483,12 @@ fun VersionManagementScreen(
                                 text = "בחירה אחת: עם וידאו והתקנות",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = Color(0xFF115E59)
                             )
                             Text(
-                                text = "מנהל קבצים עם וידאו מובנה, עורך קבצי שירים ומאפשר התקנות חופשיות במערכת (מעביר מנתיב 7 לנתיב 6).",
+                                text = "מנהל קבצים עם וידאו מובנה, עורך קבצי שירים מותקנים, ומאפשר התקנות חופשיות במערכת.",
                                 fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = Color(0xFF475569)
                             )
                         }
                     }
@@ -1500,7 +1502,7 @@ fun VersionManagementScreen(
                         .clickable { onPresetSelected(2) }
                         .border(
                             width = if (isSelected2) 2.dp else 1.dp,
-                            color = if (isSelected2) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer,
+                            color = if (isSelected2) MaterialTheme.colorScheme.primary else Color(0xFFCCFBF1),
                             shape = RoundedCornerShape(12.dp)
                         )
                         .background(
@@ -1521,12 +1523,12 @@ fun VersionManagementScreen(
                                 text = "בחירה שניה: עם וידאו ללא התקנות",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = Color(0xFF115E59)
                             )
                             Text(
                                 text = "נגן עם וידאו פתוח ועורך שירים מאופשר, אך חסום לחלוטין לכל התקנה APK חיצונית).",
                                 fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = Color(0xFF475569)
                             )
                         }
                     }
@@ -1540,7 +1542,7 @@ fun VersionManagementScreen(
                         .clickable { onPresetSelected(3) }
                         .border(
                             width = if (isSelected3) 2.dp else 1.dp,
-                            color = if (isSelected3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer,
+                            color = if (isSelected3) MaterialTheme.colorScheme.primary else Color(0xFFCCFBF1),
                             shape = RoundedCornerShape(12.dp)
                         )
                         .background(
@@ -1561,12 +1563,12 @@ fun VersionManagementScreen(
                                 text = "בחירה שלישית: ללא וידאו ללא התקנות",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = Color(0xFF115E59)
                             )
                             Text(
-                                text = "מנטרל לגמרי וידאו ומסיר את העורך שירים מהחנות, שימו לב - יש להסיר את ההתקנה של העורך שירים",
+                                text = "מנטרל לגמרי וידאו ומסיר את העורך שירים מהחנות, שימו לב - יש להסיר ידנית את ההתקנה של העורך שירים (אם מותקנת).",
                                 fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = Color(0xFF475569)
                             )
                         }
                     }
@@ -1581,7 +1583,7 @@ fun VersionManagementScreen(
                 .shadow(2.dp, RoundedCornerShape(24.dp)),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+            border = BorderStroke(1.dp, Color(0xFFCCFBF1))
         ) {
             Row(
                 modifier = Modifier
@@ -1601,7 +1603,7 @@ fun VersionManagementScreen(
                     Text(
                         text = "הוספה של שירותי Google Play (GmsCore) במכשיר. אם כבוי, אין שירותי גוגל.",
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = Color(0xFF475569)
                     )
                 }
                 Checkbox(
@@ -1628,7 +1630,7 @@ fun VersionManagementScreen(
             ) {
                 Icon(Icons.Default.Check, contentDescription = "שמור", tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("שמירה והחלה", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text("שמירה", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
 
             OutlinedButton(
@@ -1755,8 +1757,8 @@ fun UserGuideScreen() {
                         0 -> "ברוכים הבאים לאפליקציית ניהול נגן m36 כשר.\n\nכלי מתקדם זה פותח במיוחד כדי להעניק לך שליטה מלאה בפרמטרי הכשרות, חבילות ההתקנה, החומרה והשירותים של הנגן.\n\nמטרת האפליקציה היא לאפשר התאמה מושלמת בין רצון המשתמש לתצורה הכשרה של מכשיר ה-Android שברשותו, מבלי להסתבך עם הגדרות וקודים מורכבים במחשב."
                         1 -> "הנחיות לביצוע הגדרה ראשונית:\n\n1. עם אתחול האפליקציה לראשונה, מומלץ להיכנס לתפריט 'הגדרות' ולקבוע סיסמת מנהל ראשונית.\n\n2. סיסמת המנהל תמנע מילדים או משתמשים אחרים לערוך שינויים בכשרות המכשיר.\n\n3. שמור את הסיסמה במקום בטוח. היא תידרש ממך בכל כניסה לתפריט השינויים ובכל פעם שתתבצע שמירת שינויים במחיצות ה-System."
                         2 -> "מידע טכני נחוץ למנהל ה-ROM:\n\n* האפליקציה פועלת ברמת המערכת ומשנה את שמות קבצי ה-APK באנדרואיד על ידי שינוי הסיומת שלהם מ-.apk ל-.apkr (ובכך משביתה אותם לחלוטין ברמת הלינוקס).\n\n* קובצי ה-PackageInstaller מוחלפים בין גרסת המקור (הרשאות פתוחות להתקנה) לבין הגרסה הערוכה החסומה, המונעת כל התקנה ומניחה הגבלת חומרה איתנה שאינה ניתנת לעקיפה."
-                        3 -> "שאלות נפוצות ובאגים אפשריים:\n\n* בעיה: נכשל שמירה ורשום שגיאת permissions?\nפתרון: ודא כי המכשיר מחזיק הרשאות רוט מלאות (Magisk/KernelSU Superuser) ושהאפליקציה הותקנה כמחיצת מערכת (System App) מתאימה.\n\n* בעיה: חנות האפליקציות לא מותקנת?\nפתרון: אפשרות 'התקנות' חנות דורשת שקובץ החנות com.example.offlinestore1 יהיה קיים מראש במכשיר."
-                        else -> "כל הזכויות שמורות לפיתוח ה-ROM הכשר של נגן m36.\n\nמנהל הפיתוח והתיקונים: י.מ. מאואס\nמסייעים, יועצי כשרות ואבטחת מידע פנימית: חברי פורום מתמחים טופ.\n\nיישר כוח לכל העוסקים במלאכה לטובת חינוך כשר, טהור ואיכותי."
+                        3 -> "שאלות נפוצות ובאגים אפשריים:\n\n* בעיה: נכשל בשמירה ורשום שגיאת permissions?\nפתרון: ודא כי המכשיר מחזיק הרשאות רוט מלאות (Magisk/KernelSU Superuser) ושהאפליקציה הותקנה כמחיצת מערכת (System App) מתאימה.\n\n* בעיה: חנות האפליקציות לא מותקנת?\nפתרון: אפשרות 'חנות אפליקציות' דורשת שקובץ החנות com.example.offlinestore1 יהיה קיים מראש במכשיר."
+                        else -> "כל הזכויות שמורות לפיתוח ה-ROM הכשר של נגן m36.\n\nמנהל הפיתוח והתיקונים: י.מ. מאואס\nמסייעים, יועצי כשרות ואבטחת מידע פנימית: חברי פורום מתמחים טופ.\n\nיישר כוח לכל העוסקים במלאכה לטובת חינוך כשר, טהור ואיכותי..."
                     }
                     
                     Text(
@@ -1799,7 +1801,7 @@ fun SettingsScreen(
                     .shadow(2.dp, RoundedCornerShape(24.dp)),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+                border = BorderStroke(1.dp, Color(0xFFCCFBF1))
             ) {
                 Column(
                     modifier = Modifier
@@ -1811,10 +1813,10 @@ fun SettingsScreen(
                         text = "עיצוב המערכת",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = Color(0xFF115E59)
                     )
                     
-                    HorizontalDivider(color = MaterialTheme.colorScheme.primaryContainer)
+                    HorizontalDivider(color = Color(0xFFCCFBF1))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -1826,7 +1828,7 @@ fun SettingsScreen(
                             colors = ButtonDefaults.outlinedButtonColors(
                                 containerColor = if (currentThemeMode == 0) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent
                             ),
-                            border = BorderStroke(1.dp, if (currentThemeMode == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
+                            border = BorderStroke(1.dp, if (currentThemeMode == 0) MaterialTheme.colorScheme.primary else Color.Gray)
                         ) {
                             Text("בהיר", color = MaterialTheme.colorScheme.onSurface)
                         }
@@ -1836,7 +1838,7 @@ fun SettingsScreen(
                             colors = ButtonDefaults.outlinedButtonColors(
                                 containerColor = if (currentThemeMode == 1) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent
                             ),
-                            border = BorderStroke(1.dp, if (currentThemeMode == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
+                            border = BorderStroke(1.dp, if (currentThemeMode == 1) MaterialTheme.colorScheme.primary else Color.Gray)
                         ) {
                             Text("כהה", color = MaterialTheme.colorScheme.onSurface)
                         }
@@ -1846,7 +1848,7 @@ fun SettingsScreen(
                             colors = ButtonDefaults.outlinedButtonColors(
                                 containerColor = if (currentThemeMode == -1) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent
                             ),
-                            border = BorderStroke(1.dp, if (currentThemeMode == -1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
+                            border = BorderStroke(1.dp, if (currentThemeMode == -1) MaterialTheme.colorScheme.primary else Color.Gray)
                         ) {
                             Text("מערכת", color = MaterialTheme.colorScheme.onSurface)
                         }
@@ -1863,7 +1865,7 @@ fun SettingsScreen(
                     .shadow(2.dp, RoundedCornerShape(24.dp)),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+                border = BorderStroke(1.dp, Color(0xFFCCFBF1))
             ) {
                 Column(
                     modifier = Modifier
@@ -1875,10 +1877,10 @@ fun SettingsScreen(
                         text = "פרמטרי מערכת ופיתוח",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = Color(0xFF115E59)
                     )
                     
-                    Divider(color = MaterialTheme.colorScheme.primaryContainer)
+                    Divider(color = Color(0xFFCCFBF1))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -1917,7 +1919,7 @@ fun SettingsScreen(
                     .shadow(2.dp, RoundedCornerShape(24.dp)),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+                border = BorderStroke(1.dp, Color(0xFFCCFBF1))
             ) {
                 Column(
                     modifier = Modifier
@@ -1929,10 +1931,10 @@ fun SettingsScreen(
                         text = "שינוי / עדכון סיסמת ניהול",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = Color(0xFF115E59)
                     )
                     
-                    Divider(color = MaterialTheme.colorScheme.primaryContainer)
+                    Divider(color = Color(0xFFCCFBF1))
 
                     val alreadyHasPassword = SystemManager.getPassword(context) != null
 
@@ -2030,7 +2032,7 @@ fun AboutScreen() {
             )
 
             Text(
-                text = "גרסה v0.0.1_beta",
+                text = "גרסה v0.0.2_beta",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
@@ -2050,7 +2052,7 @@ fun AboutScreen() {
             HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
 
             Text(
-                text = "אפליקציה זו מיועדת עבור שילוב במערכת (ROM Component) של נגנים מסוג M36 המורצים על אנדרואיד כשר, ומבוססת על הרשאות רוט מלאות. שינוי קבצי סיסטם על ידי האפליקציה חוסם התקנות ווידאו ישירות מדרגת לינוקס נמוכה.",
+                text = "אפליקציה זו מיועדת עבור שילוב במערכת (ROM Component) של נגנים מסוג M36 המורצים על אנדרואיד, ומבוססת על הרשאות רוט מלאות. שינוי קבצי מערכת על ידי האפליקציה, חוסם התקנות ווידאו ישירות מדרגת לינוקס נמוכה.",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -2105,7 +2107,7 @@ fun DrawerLargeItem(
             .shadow(1.dp, RoundedCornerShape(14.dp)),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
+        border = BorderStroke(1.dp, Color(0xFFCCFBF1).copy(alpha = 0.4f))
     ) {
         Row(
             modifier = Modifier
@@ -2117,7 +2119,7 @@ fun DrawerLargeItem(
             Box(
                 modifier = Modifier
                     .size(8.dp)
-                    .background(MaterialTheme.colorScheme.secondary, CircleShape)
+                    .background(Color(0xFF14B8A6), CircleShape)
             )
             
             Spacer(modifier = Modifier.width(10.dp))
@@ -2172,7 +2174,7 @@ fun DrawerSmallItem(
         Box(
             modifier = Modifier
                 .size(6.dp)
-                .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f), CircleShape)
+                .background(Color(0xFF14B8A6).copy(alpha = 0.5f), CircleShape)
         )
         
         Spacer(modifier = Modifier.width(10.dp))

@@ -233,7 +233,7 @@ const requestHandler = (req, res) => {
         </div>
         <div>
           <span class="text-lg font-bold text-slate-100 tracking-wide">מנהל נגן M36 כשר</span>
-          <span class="text-xs block text-kosherTeal-500 font-medium">מערכת בקרה וניהול סיסטם</span>
+          <span class="text-xs block text-kosherTeal-500 font-medium">מערכת בקרה וניהול מערכות</span>
         </div>
       </div>
       <div class="flex items-center gap-4">
@@ -371,9 +371,9 @@ const requestHandler = (req, res) => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.516a10.005 10.005 0 01-3.048-2.616m-3.048 2.616a10.005 10.005 0 003.048-2.616m0 0A10.005 10.005 0 019 11M3 11h18M12 11a9.967 9.967 0 01-1.5 3.516" />
             </svg>
           </div>
-          <h4 class="text-lg font-bold text-white mb-2">תמיכה עברית ויידיש</h4>
+          <h4 class="text-lg font-bold text-white mb-2">תמיכה מלאה בעברית</h4>
           <p class="text-slate-400 text-sm leading-relaxed">
-            עיצוב מיושר באופן מלא מימין לשמאל (RTL) עם התאמה טבעית לשפות עברית, יידיש ואנגלית עם מערך גופנים מובנה ומושלם.
+            עיצוב מיושר באופן מלא מימין לשמאל (RTL) עם התאמה טבעית לשפות עברית ואנגלית עם מערך גופנים מובנה ומושלם.
           </p>
         </div>
 

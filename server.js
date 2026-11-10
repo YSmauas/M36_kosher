@@ -74,6 +74,25 @@ const requestHandler = (req, res) => {
     return;
   }
 
+  // Handle Static Icons
+  if (url === '/app-icon.png' || url === '/icon.png') {
+    const iconPath = path.join(__dirname, 'public/app-icon.png');
+    if (fs.existsSync(iconPath)) {
+      res.writeHead(200, { 'Content-Type': 'image/png' });
+      fs.createReadStream(iconPath).pipe(res);
+      return;
+    }
+  }
+
+  if (url === '/favicon.ico') {
+    const favPath = path.join(__dirname, 'public/favicon.ico');
+    if (fs.existsSync(favPath)) {
+      res.writeHead(200, { 'Content-Type': 'image/x-icon' });
+      fs.createReadStream(favPath).pipe(res);
+      return;
+    }
+  }
+
   // Handle APK Downloads
   if (url === '/download/debug' || url === '/app-debug.apk') {
     if (fs.existsSync(DEBUG_APK_PATH)) {
@@ -180,6 +199,9 @@ const requestHandler = (req, res) => {
   <meta name="description" content="אפליקציית ניהול מתקדמת וייחודית לסיסטם של נגן אנדרואיד כשר">
   <meta property="og:title" content="Remix מנהל נגן m36 כשר">
   <meta property="og:description" content="אפליקציית ניהול מתקדמת וייחודית לסיסטם של נגן אנדרואיד כשר">
+  <meta property="og:image" content="/app-icon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/app-icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
@@ -226,11 +248,7 @@ const requestHandler = (req, res) => {
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <!-- Brand Icon -->
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-kosherTeal-600 to-kosherBlue-500 flex items-center justify-center shadow-lg shadow-kosherTeal-900/30">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-          </svg>
-        </div>
+        <img src="/app-icon.png" alt="M36 Logo" class="w-10 h-10 rounded-xl shadow-lg shadow-kosherTeal-900/40 border border-kosherTeal-500/40 object-cover" />
         <div>
           <span class="text-lg font-bold text-slate-100 tracking-wide">מנהל נגן M36 כשר</span>
           <span class="text-xs block text-kosherTeal-500 font-medium">מערכת בקרה וניהול מערכות</span>

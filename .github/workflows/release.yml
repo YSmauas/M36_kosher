@@ -1,0 +1,202 @@
+name: Create GitHub Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'גרסת שחרור (Tag name, לדוגמה: v1.0.0)'
+        required: false
+        default: 'v1.0.0'
+      release_title:
+        description: 'כותרת השחרור (Release Title)'
+        required: false
+        default: 'מנהל נגן M36 כשר - שחרור רשמי'
+      is_prerelease:
+        description: 'האם להגדיר כגרסת קדם-שחרור (Pre-release)?'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Publish Release
+    runs-on: ubuntu-latest
+    env:
+      JAVA_TOOL_OPTIONS: "-Djava.awt.headless=true"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x gradlew
+
+      - name: Prepare Debug & Release Keystore
+        run: |
+          if [ -f "debug.keystore.base64" ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+            echo "Decoded debug.keystore from base64"
+          fi
+          if [ ! -f "debug.keystore" ]; then
+            echo "Generating debug keystore..."
+            keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Build Release and Debug APKs
+        run: ./gradlew assembleRelease assembleDebug --no-daemon
+
+      - name: Synchronize APK Artifacts
+        run: node copy-apks.js
+
+      - name: Package Release Files & Checksums
+        id: pkg
+        run: |
+          mkdir -p release-assets
+          
+          # Copy APKs and give clear, descriptive names
+          cp build-outputs/app-release.apk release-assets/KosherM36Manager-Release.apk
+          cp build-outputs/app-debug.apk release-assets/KosherM36Manager-Debug.apk
+          if [ -f "build-outputs/app-release.aab" ]; then
+            cp build-outputs/app-release.aab release-assets/KosherM36Manager-Release.aab
+          fi
+          if [ -f "public/app-icon.png" ]; then
+            cp public/app-icon.png release-assets/app-icon.png
+          fi
+
+          # Compute SHA256 Checksums
+          cd release-assets
+          sha256sum *.apk > checksums.txt
+          cat checksums.txt
+          cd ..
+
+          # Determine Tag and Title
+          if [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG="v1.0.${{ github.run_number }}"
+          fi
+
+          if [ -n "${{ github.event.inputs.release_title }}" ]; then
+            TITLE="${{ github.event.inputs.release_title }} ($TAG)"
+          else
+            TITLE="מנהל נגן M36 כשר - שחרור רשמי $TAG"
+          fi
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "title=$TITLE" >> $GITHUB_OUTPUT
+
+      - name: Generate Release Description
+        id: release_notes
+        run: |
+          RELEASE_SIZE=$(ls -lh release-assets/KosherM36Manager-Release.apk | awk '{print $5}')
+          DEBUG_SIZE=$(ls -lh release-assets/KosherM36Manager-Debug.apk | awk '{print $5}')
+          RELEASE_SHA=$(sha256sum release-assets/KosherM36Manager-Release.apk | awk '{print $1}')
+          DEBUG_SHA=$(sha256sum release-assets/KosherM36Manager-Debug.apk | awk '{print $1}')
+
+          cat << 'EOF' > release_body.md
+          ## 🛡️ מנהל נגן M36 כשר - אפליקציית ניהול מתקדמת לנגן אנדרואיד כשר
+          ### Kosher M36 Android Player Manager - Official Release
+
+          ברוכים הבאים לשחרור הרשמי של **מנהל נגן M36 כשר**! 
+          אפליקציה ייחודית ומקיפה שפותחה במיוחד עבור נגני אנדרואיד כשרים (דגם M36 ודגמים מקבילים), המאפשרת שליטה מלאה ברמת המערכת (Root), ניהול גרסאות, אבטחה וכשרות ללא פשרות.
+
+          ---
+
+          ### 🚀 מה חדש ועיקרי התכונות:
+
+          - 🎵 **אייקון חדש ומודרני**: מגן טיטניום יוקרתי המשלב מפתח סול מוזיקלי, גלי תדר אקולייזר וחותם נעילת כשרות נקייה.
+          - ⚡ **שליטת מערכת מתקדמת (Root Control)**:
+            - הרכבת מחיצות מערכת לקריאה וכתיבה (`mount -o remount,rw /system`).
+            - שינוי שמות והשבתת קובצי APK מובנים ברמת המחיצה להסרת יישומים לא רצויים.
+            - ניהול שירותי GmsCore ומניעת פעילות רקע מיותרת.
+          - 🔒 **מנגנון נעילת קוד אבטחה**:
+            - הגנה באמצעות קוד PIN מובנה לתפריט ניהול גרסאות (Version Management) למניעת שינויים לא מורשים.
+          - 🧪 **מצב סימולציה מורחב (Simulation Mode)**:
+            - מאפשר בדיקה והפעלה מלאה של האפליקציה גם במכשירים שאינם בעלי שרשיי מערכת (Non-Rooted) או באמולטורים.
+          - 🌐 **ממשק עברית מלא (RTL)**:
+            - עיצוב Material 3 ו-Jetpack Compose מותאם טבעית לימין-לשמאל עם תמיכה במסכים קטנים וגדולים.
+          - 🖥️ **שרת ליווי ודשבורד ווב מובנה**:
+            - ממשק דפדפן מהיר להורדת קובצי ההתקנה ואימות סטטוס בזמן אמת.
+
+          ---
+
+          ### 📦 קובצי הורדה (Release Downloads):
+
+          | שם קובץ | סוג | גודל | ייעוד |
+          |---|---|---|---|
+          | **KosherM36Manager-Release.apk** | גרסת ייצור | $RELEASE_SIZE | התקנה יציבה ומומלצת לשימוש שוטף בנגן |
+          | **KosherM36Manager-Debug.apk** | גרסת פיתוח | $DEBUG_SIZE | כוללת כלי ניפוי שגיאות וסימולציה |
+          | **KosherM36Manager-Release.aab** | חבילת אנדרואיד | ~7.4 MB | חבילת שחרור מקורית (Android App Bundle) |
+
+          #### 🔐 אימות קבצים (SHA-256 Checksums):
+          - `KosherM36Manager-Release.apk`:
+            ```text
+            $RELEASE_SHA
+            ```
+          - `KosherM36Manager-Debug.apk`:
+            ```text
+            $DEBUG_SHA
+            ```
+
+          ---
+
+          ### 📲 הוראות התקנה בנגן M36:
+          1. הורידו את הקובץ **`KosherM36Manager-Release.apk`**.
+          2. חברו את נגן ה-M36 למחשב באמצעות כבל USB, או העבירו את הקובץ באמצעות כרטיס זיכרון MicroSD.
+          3. פתחו את מנהל הקבצים בנגן ולחצו על קובץ ה-APK להתקנה.
+          4. בהפעלה הראשונה, תתבקשו לאשר הרשאות Superuser (Root) כדי לאפשר שינויים במחיצות המערכת.
+
+          ---
+          *נוצר ונבנה אוטומטית באמצעות תהליך GitHub Actions CI/CD.*
+          EOF
+
+          # Replace template variables
+          sed -i "s/\$RELEASE_SIZE/$RELEASE_SIZE/g" release_body.md
+          sed -i "s/\$DEBUG_SIZE/$DEBUG_SIZE/g" release_body.md
+          sed -i "s/\$RELEASE_SHA/$RELEASE_SHA/g" release_body.md
+          sed -i "s/\$DEBUG_SHA/$DEBUG_SHA/g" release_body.md
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.pkg.outputs.tag }}
+          name: ${{ steps.pkg.outputs.title }}
+          body_path: release_body.md
+          draft: false
+          prerelease: ${{ github.event.inputs.is_prerelease || false }}
+          files: |
+            release-assets/KosherM36Manager-Release.apk
+            release-assets/KosherM36Manager-Debug.apk
+            release-assets/KosherM36Manager-Release.aab
+            release-assets/app-icon.png
+            release-assets/checksums.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

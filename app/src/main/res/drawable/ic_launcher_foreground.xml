@@ -3,99 +3,74 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    
-    <!-- Central body -->
-    <!-- Core circular chassis with hollow center -->
+
+    <!-- Outer glowing shield outline (emerald/cyan aura) -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,32 C41.8,32 32,41.8 32,54 C32,66.2 41.8,76 54,76 C66.2,76 76,66.2 76,54 C76,41.8 66.2,32 54,32 Z M54,64 C48.5,64 44,59.5 44,54 C44,48.5 48.5,44 54,44 C59.5,44 64,48.5 64,54 C64,59.5 59.5,64 54,64 Z" />
+        android:fillColor="#151E2E"
+        android:strokeColor="#10B981"
+        android:strokeWidth="1.8"
+        android:pathData="M54,23 C67,23 77,29 77,39 C77,59 54,82 54,82 C54,82 31,59 31,39 C31,29 41,23 54,23 Z" />
 
-    <!-- 8 Rounded external teeth using rotated groups -->
-    <!-- Group at 0 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="0">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
+    <!-- Inner shield rim highlight -->
+    <path
+        android:fillColor="#1E293B"
+        android:strokeColor="#2DD4BF"
+        android:strokeWidth="0.8"
+        android:pathData="M54,27 C64,27 73,32 73,40 C73,56 54,76 54,76 C54,76 35,56 35,40 C35,32 44,27 54,27 Z" />
 
-    <!-- Group at 45 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="45">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
+    <!-- Sound wave equalizer bars inside the shield -->
+    <!-- Left bars -->
+    <path
+        android:fillColor="#0D9488"
+        android:pathData="M39,49 L41,49 L41,55 L39,55 Z M43,45 L45,45 L45,59 L43,59 Z M47,42 L49,42 L49,62 L47,62 Z" />
 
-    <!-- Group at 90 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="90">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
+    <!-- Right bars -->
+    <path
+        android:fillColor="#0D9488"
+        android:pathData="M59,42 L61,42 L61,62 L59,62 Z M63,45 L65,45 L65,59 L63,59 Z M67,49 L69,49 L69,55 L67,55 Z" />
 
-    <!-- Group at 135 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="135">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
-
-    <!-- Group at 180 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="180">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
-
-    <!-- Group at 225 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="225">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
-
-    <!-- Group at 270 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="270">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
-
-    <!-- Group at 315 degrees -->
-    <group
-        android:pivotX="54"
-        android:pivotY="54"
-        android:rotation="315">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M54,18 C57.3,18 60,20.7 60,24 L60,36 C60,39.3 57.3,42 54,42 C50.7,42 48,39.3 48,36 L48,24 C48,20.7 50.7,18 54,18 Z" />
-    </group>
-
-    <!-- Beautiful elegant inner circular track detail or accent to look extremely modern and high-tech -->
+    <!-- Center Treble Clef / Musical Note in vibrant cyan and white -->
+    <!-- Clef main vertical curve and loops -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#0F766E"
+        android:strokeColor="#5EEAD4"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M55,33 C53,30 49,34 50,38 C51,42 57,45 56,51 C55,56 48,56 48,51 C48,46 54,42 54,33 L54,63 C54,67 50,68 49,65" />
+
+    <!-- Clef upper swirl fill accent -->
+    <path
+        android:fillColor="#E0F2FE"
+        android:pathData="M53.5,34 C54.5,33 55,34 54.5,36 C54,38 52,38 52,36 C52,34.5 52.8,34 53.5,34 Z" />
+
+    <!-- Kosher Protection Lock & Seal (base of shield) -->
+    <!-- Lock shackle (curved bar) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F0FDFA"
         android:strokeWidth="1.5"
-        android:pathData="M 54,48.5 A 5.5,5.5 0 1,1 53.99,48.5" />
+        android:pathData="M51,62 C51,59 57,59 57,62 L57,65 L51,65 Z" />
+
+    <!-- Lock body -->
+    <path
+        android:fillColor="#047857"
+        android:strokeColor="#34D399"
+        android:strokeWidth="1.0"
+        android:pathData="M48,65 L60,65 C61,65 62,66 62,67 L62,75 C62,76 61,77 60,77 L48,77 C47,77 46,76 46,75 L46,67 C46,66 47,65 48,65 Z" />
+
+    <!-- Kosher 'K' emblem / keyhole -->
+    <!-- Small keyhole top dot -->
+    <path
+        android:fillColor="#F0FDF4"
+        android:pathData="M54,68 A 1,1 0 1,1 53.9,68 Z" />
+
+    <!-- 'K' mark on the lock -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F0FDF4"
+        android:strokeWidth="0.9"
+        android:strokeLineCap="round"
+        android:pathData="M52.5,70 L52.5,74.5 M55.5,70.5 L52.8,72.5 L55.5,74.5" />
 
 </vector>
